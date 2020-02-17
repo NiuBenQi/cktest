@@ -6,12 +6,9 @@ import com.lemon.common.Result;
 import com.lemon.pojo.User;
 import com.lemon.service.UserService;
 
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -34,7 +31,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // 注册方法
+    //    @RequestMapping("/register")
     @PostMapping("/register")
     @ApiOperation(value = "注册方法", httpMethod = "POST")
     public Result register(User user) {
@@ -44,7 +41,6 @@ public class UserController {
         return result;
     }
 
-    // 账号验重方法
     @GetMapping("/find")
     @ApiOperation(value = "账号验重方法", httpMethod = "GET")
     public Result find(User username) {
@@ -54,10 +50,9 @@ public class UserController {
         queryWrapper.eq("username", username);
         User user = userService.getOne(queryWrapper);
         if (user == null) {
-            new Result("0", "用户账号不存在");
-
+            new Result("1", "用户账号不存在");
         } else {
-            new Result("1", "用户账号已存在");
+            new Result("0", "用户账号已存在");
         }
         return result;
     }

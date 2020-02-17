@@ -34,10 +34,13 @@ public class SwaggerConfiguration {
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
                 .title("swagger接口文档")
-                .contact(new Contact("benqi",null,"962475388@qq.com"))
+                .contact(new Contact("benqi", null, "962475388@qq.com"))
                 .description("测试平台接口文档")
-                .termsOfServiceUrl("https://github.com/linlinjava/litemall")
+                .termsOfServiceUrl("https://github.com/NiuBenQi/cktest")
                 .version("1.0")
                 .build();
     }
+
+
+
 }
