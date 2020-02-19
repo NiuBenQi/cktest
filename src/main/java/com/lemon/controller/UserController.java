@@ -9,6 +9,7 @@ import com.lemon.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -63,9 +64,10 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/login")
     @ApiOperation(value = "登录方法", httpMethod = "POST")
     public Result login(User user) {
+        // （原始方法）调用业务层方法，查询DB，根据username-user，判断password
         Result result = null;
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
@@ -75,7 +77,7 @@ public class UserController {
             // 讲session返回去
             String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
             result = new Result("1", sessionId, "登录成功");
-        } catch (UnknownAccountException e) {
+        } catch (AuthenticationException e) {
             if (e instanceof UnknownAccountException) {
                 result = new Result("0", "用户名错误");
             } else {

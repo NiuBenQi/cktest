@@ -10,6 +10,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @program: cktest
@@ -18,7 +19,7 @@ import org.apache.shiro.subject.PrincipalCollection;
  * @create: 2020-02-18 20:46
  **/
 public class MyRealm extends AuthorizingRealm {
-
+    @Autowired
     UserService userService;
 
     // 授权（权限管理）
@@ -39,7 +40,7 @@ public class MyRealm extends AuthorizingRealm {
         if (adUser != null) {
 //            if (adUser.getPassword().equals(token.getCredentials())){
 //            }
-            return new SimpleAuthenticationInfo(username, adUser.getPassword(), getName());
+            return new SimpleAuthenticationInfo(adUser, adUser.getPassword(), getName());
         }
         return null;
     }
