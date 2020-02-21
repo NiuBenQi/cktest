@@ -2,6 +2,8 @@ package com.lemon.shiro;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
@@ -49,12 +51,15 @@ public class ShiroConfig {
     @Bean
     public SecurityManager securityManager(MyRealm myRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        // 自定义session管理  设置realm
         securityManager.setRealm(myRealm);
         return securityManager;
     }
 
-//    @Bean
-//    public SessionManager sessionManager(){
-//        CustomsessionManager
-//    }
+    @Bean
+    public SessionManager sessionManager() {
+        CustomSessionManager manager = new CustomSessionManager();
+        manager.setSessionDAO(new EnterpriseCacheSessionDAO());
+        return manager;
+    }
 }

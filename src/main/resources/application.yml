@@ -9,5 +9,8 @@ spring:
     password: 1234
     driver-class-name: com.mysql.jdbc.Driver
 
-
+logging:
+  level:
+    root: info
+    com.lemon.mapper: trace
 

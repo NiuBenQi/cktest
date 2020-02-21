@@ -35,12 +35,12 @@ public class MyRealm extends AuthorizingRealm {
         String username = token.getPrincipal().toString();
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
-        User adUser = userService.getOne(queryWrapper);
+        User dbUser = userService.getOne(queryWrapper);
 
-        if (adUser != null) {
+        if (dbUser != null) {
 //            if (adUser.getPassword().equals(token.getCredentials())){
 //            }
-            return new SimpleAuthenticationInfo(adUser, adUser.getPassword(), getName());
+            return new SimpleAuthenticationInfo(dbUser, dbUser.getPassword(), getName());
         }
         return null;
     }

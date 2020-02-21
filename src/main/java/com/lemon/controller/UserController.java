@@ -76,7 +76,8 @@ public class UserController {
             subject.login(token);
             // 讲session返回去
             String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
-            result = new Result("1", sessionId, "登录成功");
+            User loginUser =(User) subject.getPrincipal();
+            result = new Result("1", loginUser.getId(), sessionId);
         } catch (AuthenticationException e) {
             if (e instanceof UnknownAccountException) {
                 result = new Result("0", "用户名错误");
@@ -88,4 +89,32 @@ public class UserController {
         return result;
     }
 
+
+    @GetMapping("/logout")
+    @ApiOperation(value = "退出方法", httpMethod = "GET")
+    public Result logout() {
+        Result result = null;
+        SecurityUtils.getSubject().logout();
+        result = new Result("1","账号未登录");
+        return result;
+    }
+
+    @GetMapping("/unauth")
+    @ApiOperation(value = "未授权方法", httpMethod = "GET")
+    public Result unauth() {
+        Result result = null;
+        // 从shiro退出会话
+        result = new Result("1","账号未登录");
+        return result;
+    }
+
+    @PostMapping("/centre")
+    @ApiOperation(value = "查看用户中心方法", httpMethod = "GTE")
+    public Result centre(User user) {
+        Result result = null;
+        String principal =(String) SecurityUtils.getSubject().getPrincipal();
+        result = new Result("1",principal,"账号未登录");
+        System.out.println(result);
+        return result;
+    }
 }
