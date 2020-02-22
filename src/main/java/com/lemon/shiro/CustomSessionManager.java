@@ -17,19 +17,22 @@ import java.io.Serializable;
  **/
 public class CustomSessionManager extends DefaultWebSessionManager {
 
-    private static final String AUTHORIZATION = "Authorization";
+    private static final String AUTHORIZATION ="Authorization";
+
     private static final String REFERENCED_SESSION_ID_SOURCE = "cookie";
 
-//    @Override
-//    protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
-//        String sessionId = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
-//        if (StringUtils.isNotEmpty(sessionId)){
-//            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE,ShiroHttpServletRequest);
-//            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID,sessionId);
-//            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID,Boolean.toString());
-//            return sessionId;
-//        }
-//        return super.getSessionId(request,response);
-//    }
+    @Override
+    protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
+
+        String sessionId = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
+
+        if (StringUtils.isNotEmpty(sessionId)) {
+            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, ShiroHttpServletRequest.COOKIE_SESSION_ID_SOURCE);
+            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, sessionId);
+            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
+            return sessionId;
+        }
+        return super.getSessionId(request, response);
+    }
 
 }

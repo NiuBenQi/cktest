@@ -1,9 +1,10 @@
 package com.lemon.handler;
 
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * @program: cktest
@@ -16,17 +17,21 @@ public class CorsConfig {
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
-        return corsConfiguration;
+        corsConfiguration.addAllowedOrigin("*"); // 1
 
+        corsConfiguration.addAllowedHeader("*"); // 2
+
+        corsConfiguration.addAllowedMethod("*"); // 3
+        return corsConfiguration;
     }
 
     @Bean
-    public CorsFilter corsFilter() {
+    public org.springframework.web.filter.CorsFilter corsFilter() {
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",buildConfig());
-        return new CorsFilter();
+
+        source.registerCorsConfiguration("/**", buildConfig()); // 4
+
+        return new CorsFilter(source);
     }
 }

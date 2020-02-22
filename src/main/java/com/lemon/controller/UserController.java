@@ -109,7 +109,7 @@ public class UserController {
     }
 
     @PostMapping("/centre")
-    @ApiOperation(value = "查看用户中心方法", httpMethod = "GTE")
+    @ApiOperation(value = "查看用户中心方法", httpMethod = "GET")
     public Result centre(User user) {
         Result result = null;
         String principal =(String) SecurityUtils.getSubject().getPrincipal();
