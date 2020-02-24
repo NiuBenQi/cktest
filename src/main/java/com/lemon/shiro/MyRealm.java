@@ -40,6 +40,7 @@ public class MyRealm extends AuthorizingRealm {
         if (dbUser != null) {
 //            if (adUser.getPassword().equals(token.getCredentials())){
 //            }
+            System.out.println(dbUser.getId());
             return new SimpleAuthenticationInfo(dbUser, dbUser.getPassword(), getName());
         }
         return null;

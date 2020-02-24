@@ -1,16 +1,15 @@
 package com.lemon.shiro;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
-import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @program: cktest
@@ -22,37 +21,40 @@ import java.util.Map;
 public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        //定义返回对象
+
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        //必须设置 SecurityManager,Shiro的核心安全接口
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        //拦截器
+        // 拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // 配置不会被拦截的链接 顺序判断
+
         filterChainDefinitionMap.put("/user/login", "anon");
         filterChainDefinitionMap.put("/user/find", "anon");
         filterChainDefinitionMap.put("/user/register", "anon");
-        filterChainDefinitionMap.put("/user/**", "anon");
-        // 过滤连定义，从上向下顺序执行
-        // authc:url都必须认证通过才可以访问， anon:url 都可以匿名访问
+
+        // 过滤链定义，从上向下顺序执行
+        // authc:url都必须认证通过才可以访问; anon:url都可以匿名访问
         filterChainDefinitionMap.put("/**", "authc");
-//        filterChainDefinitionMap.put("/**","anon");
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        // 如果不设置则自动寻找web工程目录下的“/login”页面
-        shiroFilterFactoryBean.setLoginUrl("user/unauth");
+        // 如果不设置默认会自动寻找Web工程根目录下的"/login"页面
+        shiroFilterFactoryBean.setLoginUrl("/user/unauth");
         return shiroFilterFactoryBean;
     }
 
+    // 重新设置SecurityManager，通过自动以的MyRealm完成登录校验：
     @Bean
     public MyRealm myReal() {
         return new MyRealm();
     }
 
     @Bean
-    public SecurityManager securityManager(MyRealm myRealm) {
+    public SecurityManager securityManager(MyRealm myReal) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        // 自定义session管理  设置realm
-        securityManager.setRealm(myRealm);
+        //自定义session管理
+        securityManager.setSessionManager(sessionManager());
+        // 设置realm
+        securityManager.setRealm(myReal);
         return securityManager;
     }
 

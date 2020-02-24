@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * @program: cktest
- * @description
+ * @description 会话管理
  * @author: NiuBenQi
  * @create: 2020-02-21 21:20
  **/

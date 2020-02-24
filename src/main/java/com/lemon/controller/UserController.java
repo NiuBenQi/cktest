@@ -31,7 +31,7 @@ import java.text.ParseException;
 @RestController
 @Api("用户模块")
 @RequestMapping("/user")
-@CrossOrigin
+//@CrossOrigin
 public class UserController {
     // 按类型注入 Autowired
 
