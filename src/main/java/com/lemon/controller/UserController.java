@@ -108,13 +108,15 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/centre")
-    @ApiOperation(value = "查看用户中心方法", httpMethod = "GET")
-    public Result centre(User user) {
-        Result result = null;
-        String principal =(String) SecurityUtils.getSubject().getPrincipal();
-        result = new Result("1",principal,"账号未登录");
-        System.out.println(result);
-        return result;
-    }
+//    @GetMapping("/center")
+//    @ApiOperation(value = "查看用户中心方法", httpMethod = "GET")
+//    public Result center(Integer userid) {
+//        Result result = null;
+//        String principal =(String) SecurityUtils.getSubject().getPrincipal();
+//        SecurityUtils.getSubject().
+//        result = new Result("100",principal,"查询成功");
+//        System.out.println(result);
+//        return result;
+//    }
+
 }

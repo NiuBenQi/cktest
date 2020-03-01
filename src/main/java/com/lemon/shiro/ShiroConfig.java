@@ -32,6 +32,14 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/find", "anon");
         filterChainDefinitionMap.put("/user/register", "anon");
 
+        //swagger2放行
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/swagger/**", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/v2/**", "anon");
+        filterChainDefinitionMap.put("/webjars/**", "anon");
+        filterChainDefinitionMap.put("/configuration/**", "anon");
+
         // 过滤链定义，从上向下顺序执行
         // authc:url都必须认证通过才可以访问; anon:url都可以匿名访问
         filterChainDefinitionMap.put("/**", "authc");

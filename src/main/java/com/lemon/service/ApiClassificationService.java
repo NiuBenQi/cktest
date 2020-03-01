@@ -1,7 +1,10 @@
 package com.lemon.service;
 
+import com.lemon.common.ApiClassificationVO;
 import com.lemon.pojo.ApiClassification;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ApiClassificationService extends IService<ApiClassification> {
 
+    public List<ApiClassificationVO> getWithApi(Integer projectId);
 }
