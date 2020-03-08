@@ -21,6 +21,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         // 创建时间自动填充为当前时间 / 每个表同一个字段名也OK
         this.setFieldValByName("regtime",new Date(),metaObject);
+        this.setFieldValByName("create_time",new Date(),metaObject);
     }
 
     @Override

@@ -2,10 +2,13 @@ package com.lemon.mapper;
 
 import com.lemon.pojo.ApiRequestParam;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author benqi
@@ -13,4 +16,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ApiRequestParamMapper extends BaseMapper<ApiRequestParam> {
 
+    @Select("SELECT * from api_request_param WHERE api_id=#{apiId};")
+    public List<ApiRequestParam> findAll(Integer apiId);
 }

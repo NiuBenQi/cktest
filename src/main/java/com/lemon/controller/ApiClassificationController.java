@@ -1,13 +1,19 @@
 package com.lemon.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lemon.common.ApiClassificationVO;
 import com.lemon.common.Result;
+import com.lemon.pojo.Api;
+import com.lemon.pojo.ApiClassification;
+import com.lemon.pojo.User;
 import com.lemon.service.ApiClassificationService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +51,32 @@ public class ApiClassificationController {
         Result result = null;
         apiClassificationService.removeById(id);
         result = new Result("1", "删除成功");
+        return result;
+    }
+
+    // 根据projectId单表查询分类信息
+    @GetMapping("/findAll")
+    @ApiOperation(value = "根据projectId单表查询分类信息", httpMethod = "GET")
+    public Result findAll (Integer projectId) {
+        Result result = null;
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("project_id",projectId);
+        List<ApiClassification> list = apiClassificationService.list(queryWrapper);
+        result = new Result("1",list, "查询成功");
+        return result;
+    }
+
+    @PostMapping("/add")
+    public Result addapiClassification(String name,String description,Integer projectId) {
+        ApiClassification apiClassification = new ApiClassification();
+        apiClassification.setName(name);
+        apiClassification.setDescription(description);
+        apiClassification.setProjectId(projectId);
+        User user =(User) SecurityUtils.getSubject().getPrincipal();
+        apiClassification.setCreateUser(user.getId());
+        apiClassification.setCreateTime(new Date());
+        apiClassificationService.save(apiClassification);
+        Result result = new Result("1","接口分类添加成功");
         return result;
     }
 }

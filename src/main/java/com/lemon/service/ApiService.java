@@ -1,11 +1,15 @@
 package com.lemon.service;
 
+import com.lemon.common.ApiListVO;
+import com.lemon.common.ApiVO;
 import com.lemon.pojo.Api;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author benqi
@@ -13,4 +17,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ApiService extends IService<Api> {
 
+    public List<ApiListVO> showApiListByProject(Integer projectId);
+
+    public List<ApiListVO> showApiListByApiClassification(Integer apiClassfication);
+
+    public ApiVO findApiViewVO(Integer apiId);
 }

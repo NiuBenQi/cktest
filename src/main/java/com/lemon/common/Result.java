@@ -20,6 +20,11 @@ public class Result {
         this.massage = massage;
     }
 
+    public Result(String status, Object data) {
+        this.status = status;
+        this.data = data;
+    }
+
     public Result(String status, String massage) {
         this.status = status;
         this.massage = massage;
