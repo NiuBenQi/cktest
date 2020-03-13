@@ -1,6 +1,7 @@
 package com.lemon.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -47,5 +48,6 @@ public class ApiRequestParam implements Serializable {
     @ApiModelProperty(value = "字段描述")
     private String description;
 
-
+    @TableField(exist = false)
+    private String value;
 }

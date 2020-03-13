@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lemon.pojo.Project;
 import org.apache.ibatis.annotations.*;
 
+
 import java.util.List;
 
 /**
@@ -29,11 +30,12 @@ public interface ApiMapper extends BaseMapper<Api> {
     public List<ApiListVO> showApiListByApiClassification(Integer apiClassfication);
 
 
-    // 利用延迟加载 先两表查询出接口信息，然后调用findAll 一对多的方式
+    /** 利用延迟加载 先两表查询出接口信息，然后调用findAll 一对多的方式 **/
     @Select("SELECT t1.*,t2.username createUsername from api t1,user t2 WHERE  t1.id=#{apiId} and t1.create_user=t2.id;")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "requestParams", column = "id", many = @Many(select = "com.lemon.mapper.ApiRequestParamMapper.findAll"))
     })
+
     public ApiVO findApiViewVO(Integer apiId);
 }

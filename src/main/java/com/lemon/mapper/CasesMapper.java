@@ -13,4 +13,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CasesMapper extends BaseMapper<Cases> {
 
+//    SELECT t1.*,t6.* from cases t1
+//    LEFT JOIN suite t2 on t1.suite_id = t2.id
+//    LEFT JOIN project t3 on t2.project_id = t3.id
+//    LEFT JOIN case_param_value t4 on t1.id = t4.case_id
+//    LEFT JOIN api_request_param t5 on t4.api_request_param_id=t5.id
+//    LEFT JOIN api t6 on t5.api_id=t6.id
+//    WHERE t3.id=1;
+
 }

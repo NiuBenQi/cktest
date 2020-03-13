@@ -45,5 +45,6 @@ public class Suite implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
+//    private Suite list;
 
 }
