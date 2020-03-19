@@ -19,12 +19,10 @@ import java.util.List;
  */
 public interface SuiteMapper extends BaseMapper<Suite> {
 
-//    @Select("SELECT * from suite where project_id=#{projectId}")
-//    @Results({
-//            @Result(column = "id",property = "id"),
-//            @Result(column = "id",property = "suite",many = @Many(select = "com.lemon.mapper.SuiteMapper.findAll"))
-//    })
-//    public List<Suite> findSuitAndReleadtedCasesBy(Integer projectId){
-//
-//    }
+    @Select("SELECT * from suite where project_id=#{projectId}")
+    @Results({
+            @Result(column = "id",property = "id"),
+            @Result(column = "cases",property = "id",many = @Many(select = "com.lemon.mapper.CasesMapper.findAll"))
+    })
+    List<Suite> findSuitAndReleadtedCasesBy(Integer projectId);
 }

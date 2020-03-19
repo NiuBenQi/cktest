@@ -2,6 +2,9 @@ package com.lemon.mapper;
 
 import com.lemon.pojo.Cases;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,6 +15,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-02-14
  */
 public interface CasesMapper extends BaseMapper<Cases> {
+    @Select("SELECT * from cases WHERE suite_id=#{suitId}")
+    List<Cases> findAll(Integer suitId);
 
 //    SELECT t1.*,t6.* from cases t1
 //    LEFT JOIN suite t2 on t1.suite_id = t2.id

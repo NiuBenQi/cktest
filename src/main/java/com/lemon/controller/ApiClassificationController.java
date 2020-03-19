@@ -1,6 +1,7 @@
 package com.lemon.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lemon.common.ApiClassificationVO;
 import com.lemon.common.Result;
@@ -38,7 +39,7 @@ public class ApiClassificationController {
         if (tab == 1) {
             // 接口列表
             List<ApiClassificationVO> list = apiClassificationService.getWithApi(projectId);
-            result = new Result("1",list,"查询分类同时也延迟加载api");
+            result = new Result("1", list, "查询分类同时也延迟加载api");
         } else if (tab == 2) {
             // 测试集合
         }
@@ -47,7 +48,7 @@ public class ApiClassificationController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据apiClassification.id删除分类信息", httpMethod = "GET")
-    public Result delClassification (@PathVariable("id") Integer id) {
+    public Result delClassification(@PathVariable("id") Integer id) {
         Result result = null;
         apiClassificationService.removeById(id);
         result = new Result("1", "删除成功");
@@ -57,26 +58,36 @@ public class ApiClassificationController {
     // 根据projectId单表查询分类信息
     @GetMapping("/findAll")
     @ApiOperation(value = "根据projectId单表查询分类信息", httpMethod = "GET")
-    public Result findAll (Integer projectId) {
+    public Result findAll(Integer projectId) {
         Result result = null;
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("project_id",projectId);
+        queryWrapper.eq("project_id", projectId);
         List<ApiClassification> list = apiClassificationService.list(queryWrapper);
-        result = new Result("1",list, "查询成功");
+        result = new Result("1", list, "查询成功");
         return result;
     }
 
     @PostMapping("/add")
-    public Result addapiClassification(String name,String description,Integer projectId) {
+    public Result addapiClassification(String name, String description, Integer projectId) {
         ApiClassification apiClassification = new ApiClassification();
         apiClassification.setName(name);
         apiClassification.setDescription(description);
         apiClassification.setProjectId(projectId);
-        User user =(User) SecurityUtils.getSubject().getPrincipal();
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
         apiClassification.setCreateUser(user.getId());
         apiClassification.setCreateTime(new Date());
         apiClassificationService.save(apiClassification);
-        Result result = new Result("1","接口分类添加成功");
+        Result result = new Result("1", "接口分类添加成功");
+        return result;
+    }
+
+    @PostMapping("/add2")
+    public Result add2(@RequestBody String jsonStr) {
+        //将jsonStr转为java对象
+        ApiClassification apiClassification = JSON.parseObject(jsonStr,ApiClassification.class);
+        System.out.println(jsonStr+"=========="+apiClassification);
+        apiClassificationService.save(apiClassification);
+        Result result = new Result("1", "新增分类成功");
         return result;
     }
 }

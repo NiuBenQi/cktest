@@ -1,10 +1,18 @@
 package com.lemon.service.impl;
 
+import com.lemon.common.ApiVO;
+import com.lemon.pojo.ApiRequestParam;
+import com.lemon.pojo.CaseParamValue;
 import com.lemon.pojo.Cases;
 import com.lemon.mapper.CasesMapper;
+import com.lemon.service.CaseParamValueService;
 import com.lemon.service.CasesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +25,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class CasesServiceImpl extends ServiceImpl<CasesMapper, Cases> implements CasesService {
 
+    @Autowired
+    CaseParamValueService caseParamValueService;
+    @Override
+    public void add(Cases caseVo, ApiVO apiRunVo){
+        // 添加到case
+        this.save(caseVo);
+        // 批量添加到case_param_value
+        List<ApiRequestParam> requestParams = apiRunVo.getRequestParams();
+
+        List<CaseParamValue> caseParamValues = new ArrayList<CaseParamValue>();
+        for (ApiRequestParam apiRequestParam : requestParams){
+            CaseParamValue caseParamValue = new CaseParamValue();
+            caseParamValue.setCaseId(caseVo.getId());
+            caseParamValue.setApiRequestParamId(apiRequestParam.getId());
+            caseParamValue.setApiRequestParamValue(apiRequestParam.getValue());
+            caseParamValues.add(caseParamValue);
+        }
+        caseParamValueService.saveBatch(caseParamValues);
+    }
 }

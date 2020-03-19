@@ -51,36 +51,63 @@ public class ApiServiceImpl extends ServiceImpl<ApiMapper, Api> implements ApiSe
 
     @Override
     public ApiRunResult run(ApiVO apiRunVO) {
-        //远程调用
+        //远程调用  restTempplate HTTP发送get、post、put、delete请求
         RestTemplate restTemplate = new RestTemplate();
         String url = apiRunVO.getHost() + apiRunVO.getUrl();
         String method = apiRunVO.getMethod();
         List<ApiRequestParam> list = apiRunVO.getRequestParams();
         LinkedMultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
         LinkedMultiValueMap<String, String> bodyParams = new LinkedMultiValueMap<String, String>();
+        String paramStr = "?";
+        String bodyParamsStr = null;
         for (ApiRequestParam apiRequestParam : list) {
+            // 将不同的请求信息循环放入对应的类型中 1. param --2.body  --3.head --4.json格式的请求体
+            if(apiRequestParam.getType() == 1){
+                paramStr += apiRequestParam.getName()+"="+apiRequestParam.getValue()+"&";
+            }
             if (apiRequestParam.getType() == 3) {
                 // 头
                 headers.add(apiRequestParam.getName(), apiRequestParam.getValue());
             } else if(apiRequestParam.getType()==4){
-                String bodyParamsStr= apiRequestParam.getValue();
-            } else{
-                // body 2 type==1情况未处理
+                bodyParamsStr = apiRequestParam.getValue();
+            } else if (apiRequestParam.getType()==2){
+                // body 2
                 bodyParams.add(apiRequestParam.getName(), apiRequestParam.getValue());
             }
         }
-
+        // paramtype=1时，去掉url最后一个&
+        if(!"?".equals(paramStr)){
+            paramStr = paramStr.substring(0,paramStr.lastIndexOf("&"));
+        }
+        System.out.println("================"+paramStr);
         HttpEntity httpEntity = new HttpEntity(bodyParams, headers);
         ResponseEntity responseEntity = null;
         ApiRunResult apiRunResult = new ApiRunResult();
         try {
             if ("get".equalsIgnoreCase(method)) {
                 httpEntity = new HttpEntity(headers);
-                responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+                responseEntity = restTemplate.exchange(url+paramStr, HttpMethod.GET, httpEntity, String.class);
             }
             if ("post".equalsIgnoreCase(method)) {
+                if (bodyParamsStr !=null && bodyParamsStr != ""){
+                    // json 格式的post请求  4 类型
+                    httpEntity = new HttpEntity(bodyParamsStr, headers);
+                    responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+                }else{
+                    // 执行请求并返回结果  2类型
+                    httpEntity = new HttpEntity(bodyParams, headers);
+                    responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+                }
+            }
+            if ("put".equalsIgnoreCase(method)) {
                 httpEntity = new HttpEntity(bodyParams, headers);
-                responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+                // 执行请求并返回结果
+                responseEntity = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, String.class);
+            }
+            if ("delete".equalsIgnoreCase(method)) {
+                httpEntity = new HttpEntity(bodyParams, headers);
+                // 执行请求并返回结果
+                responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, String.class);
             }
         } catch (HttpStatusCodeException e) {
             // 注意此时有调用异常，往往没有body
