@@ -22,7 +22,7 @@ public interface SuiteMapper extends BaseMapper<Suite> {
     @Select("SELECT * from suite where project_id=#{projectId}")
     @Results({
             @Result(column = "id",property = "id"),
-            @Result(column = "cases",property = "id",many = @Many(select = "com.lemon.mapper.CasesMapper.findAll"))
+            @Result(column = "id",property = "cases",many=@Many(select = "com.lemon.mapper.CasesMapper.findAll"))
     })
     List<Suite> findSuitAndReleadtedCasesBy(Integer projectId);
 }

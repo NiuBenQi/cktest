@@ -1,8 +1,12 @@
 package com.lemon.service;
 
 import com.lemon.common.ApiVO;
+import com.lemon.common.CaseEditVO;
+import com.lemon.common.CaseListVO;
 import com.lemon.pojo.Cases;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +18,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CasesService extends IService<Cases> {
     public void add(Cases caseVo, ApiVO apiRunVo);
+
+    List<CaseListVO> showCaseUnderProject(Integer projectId);
+
+    List<CaseListVO> showCaseUnderSuite(String suiteId);
+
+    CaseEditVO findCaseEditVo(String caseId);
 }

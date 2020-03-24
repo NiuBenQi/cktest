@@ -7,8 +7,10 @@ import com.lemon.common.ApiClassificationVO;
 import com.lemon.common.Result;
 import com.lemon.pojo.Api;
 import com.lemon.pojo.ApiClassification;
+import com.lemon.pojo.Suite;
 import com.lemon.pojo.User;
 import com.lemon.service.ApiClassificationService;
+import com.lemon.service.SuiteService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class ApiClassificationController {
     @Autowired
     ApiClassificationService apiClassificationService;
 
+    @Autowired
+    SuiteService suiteService;
+
     @GetMapping("/toIndex")
     @ApiOperation(value = "根据projectid查询分类信息", httpMethod = "GET")
     public Result getWithApi(Integer projectId, Integer tab) {
@@ -42,6 +47,8 @@ public class ApiClassificationController {
             result = new Result("1", list, "查询分类同时也延迟加载api");
         } else if (tab == 2) {
             // 测试集合
+            List<Suite> list2 = suiteService.findSuitAndReleadtedCasesBy(projectId);
+            result = new Result("1", list2, "根据项目ID查询测试套件成功");
         }
         return result;
     }
