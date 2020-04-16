@@ -1,7 +1,10 @@
 package com.lemon.pojo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -42,6 +45,7 @@ public class Project implements Serializable {
     @ApiModelProperty(value = "创建用户id")
     private Integer createUser;
 
+    @TableField( fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
