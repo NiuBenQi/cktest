@@ -1,5 +1,6 @@
 package com.lemon.common;
 
+import com.lemon.pojo.TestReport;
 import lombok.Data;
 
 /**
@@ -15,4 +16,6 @@ public class CaseListVO {
     private String name;
     private String apiId;
     private String apiUrl;
+
+    private TestReport testReport;
 }
