@@ -82,7 +82,7 @@ public class ApiServiceImpl extends ServiceImpl<ApiMapper, Api> implements ApiSe
         System.out.println("================"+paramStr);
         HttpEntity httpEntity = new HttpEntity(bodyParams, headers);
         // 给responseEntity 赋个默认值 POST 请求
-        ResponseEntity responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity responseEntity = null;
         ApiRunResult apiRunResult = new ApiRunResult();
         try {
             if ("get".equalsIgnoreCase(method)) {

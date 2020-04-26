@@ -6,14 +6,18 @@ import com.lemon.common.ApiVO;
 import com.lemon.common.Result;
 import com.lemon.pojo.Cases;
 import com.lemon.pojo.Suite;
+import com.lemon.pojo.User;
 import com.lemon.service.SuiteService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,6 +43,18 @@ public class SuiteController {
         return new Result("1",list,"成功");
     }
 
+
+    @PostMapping("/add")
+    @ApiOperation(value = "添加测试套件", httpMethod = "POST")
+    public Result add(Suite suite) {
+        User user =(User) SecurityUtils.getSubject().getPrincipal();
+        suite.setCreateUser(user.getId());
+        suite.setCreateTime(new Date());
+        System.out.println("suite值为："+suite);
+        suiteService.save(suite);
+
+        return new Result("1","成功");
+    }
 
 
 }

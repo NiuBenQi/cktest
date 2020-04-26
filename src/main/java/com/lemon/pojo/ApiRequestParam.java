@@ -50,4 +50,7 @@ public class ApiRequestParam implements Serializable {
 
     @TableField(exist = false)
     private String value;
+
+    @TableField(exist = false)
+    private Integer valueId;
 }

@@ -36,6 +36,5 @@ public interface ApiMapper extends BaseMapper<Api> {
             @Result(property = "id", column = "id"),
             @Result(property = "requestParams", column = "id", many = @Many(select = "com.lemon.mapper.ApiRequestParamMapper.findAll"))
     })
-
     public ApiVO findApiViewVO(Integer apiId);
 }

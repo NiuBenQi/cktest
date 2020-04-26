@@ -12,11 +12,7 @@ import com.lemon.service.CaseParamValueService;
 import com.lemon.service.CasesService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,5 +62,12 @@ public class CasesController {
     public Result toCaseEdit(String caseId) {
         CaseEditVO list = casesService.findCaseEditVo(caseId);
         return new Result("1", list, "查询测试数据成功");
+    }
+
+    @PutMapping("/update")
+    @ApiOperation(value = "更新测试数据", httpMethod = "PUT")
+    public Result updateCase(CaseEditVO caseEditVO) {
+        casesService.updateCase(caseEditVO);
+        return new Result("1", "更新用例成功");
     }
 }

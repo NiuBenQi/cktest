@@ -1,6 +1,7 @@
 package com.lemon.common;
 
 import com.lemon.pojo.ApiRequestParam;
+import com.lemon.pojo.Cases;
 import com.lemon.pojo.TestRule;
 import lombok.Data;
 
@@ -14,9 +15,9 @@ import java.util.List;
  * @create: 2020-03-22 11:31
  **/
 @Data
-public class CaseEditVO {
-    private Integer id;
-    private String name;
+public class CaseEditVO extends Cases {
+//    private Integer id;
+//    private String name;
     private String method;
     private String url;
     private Integer apiId;

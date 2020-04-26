@@ -24,4 +24,6 @@ public interface CasesService extends IService<Cases> {
     List<CaseListVO> showCaseUnderSuite(String suiteId);
 
     CaseEditVO findCaseEditVo(String caseId);
+
+    void updateCase(CaseEditVO caseEditVO);
 }
