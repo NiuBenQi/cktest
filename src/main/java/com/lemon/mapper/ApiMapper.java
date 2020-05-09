@@ -20,6 +20,7 @@ import java.util.List;
  */
 public interface ApiMapper extends BaseMapper<Api> {
 
+
     @Select("SELECT * FROM api WHERE api_classification_id=#{apiClassfication}")
     public List<Api> findApi(Integer apiClassfication);
 

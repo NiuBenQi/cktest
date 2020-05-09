@@ -1,5 +1,6 @@
 package com.lemon.service;
 
+import com.lemon.common.ReportVO;
 import com.lemon.pojo.TestReport;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lemon.pojo.TestRule;
@@ -17,4 +18,8 @@ import java.util.List;
 public interface TestReportService extends IService<TestReport> {
 
     List<TestReport> run(Integer suiteId);
+
+    TestReport findByCaseId(Integer caseId);
+
+    ReportVO getReport(Integer suiteId);
 }

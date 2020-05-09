@@ -4,13 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONPath;
 import com.lemon.common.ApiRunResult;
 import com.lemon.common.CaseEditVO;
+import com.lemon.common.ReportVO;
 import com.lemon.mapper.TestRuleMapper;
 import com.lemon.pojo.ApiRequestParam;
 import com.lemon.pojo.TestReport;
 import com.lemon.mapper.TestReportMapper;
 import com.lemon.pojo.TestRule;
+import com.lemon.pojo.User;
 import com.lemon.service.TestReportService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -20,6 +23,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +40,8 @@ public class TestReportServiceImpl extends ServiceImpl<TestReportMapper, TestRep
     @Autowired
     TestRuleMapper testRuleMapper;
 
+    @Autowired
+    TestReportMapper testReportMapper;
     /**
      * 循环运行api run 返回一个testReport集合
      *
@@ -57,6 +63,20 @@ public class TestReportServiceImpl extends ServiceImpl<TestReportMapper, TestRep
         this.saveBatch(reportList);
         return reportList;
 
+    }
+
+    @Override
+    public TestReport findByCaseId(Integer caseId) {
+        return testReportMapper.findByCaseId(caseId);
+    }
+
+    @Override
+    public ReportVO getReport(Integer suiteId) {
+        ReportVO report = testReportMapper.getReport(suiteId);
+        User user= (User)SecurityUtils.getSubject().getPrincipal();
+        report.setUsername(user.getUsername());
+        report.setCreateReprotTime(new Date());
+        return report;
     }
 
     /**

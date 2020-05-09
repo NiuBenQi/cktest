@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @program: cktest
- * @description
+ * @description 拦截器
  * @author: NiuBenQi
  * @create: 2020-02-16 20:54
  **/
@@ -32,7 +32,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/find", "anon");
         filterChainDefinitionMap.put("/user/register", "anon");
 
-        //swagger2放行
+        // 放行
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/swagger/**", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");

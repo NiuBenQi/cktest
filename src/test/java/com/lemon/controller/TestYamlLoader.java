@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
 
 /**
  * @program: cktest
- * @description
+ * @description  读取自定义yml文件
  * @author: NiuBenQi
  * @create: 2020-04-21 10:24
  **/

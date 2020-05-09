@@ -18,4 +18,5 @@ public class CaseListVO {
     private String apiUrl;
 
     private TestReport testReport;
+
 }
