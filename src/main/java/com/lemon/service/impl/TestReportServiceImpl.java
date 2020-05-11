@@ -72,10 +72,14 @@ public class TestReportServiceImpl extends ServiceImpl<TestReportMapper, TestRep
 
     @Override
     public ReportVO getReport(Integer suiteId) {
+//        ReportVO reportVO2 = new ReportVO();
         ReportVO report = testReportMapper.getReport(suiteId);
         User user= (User)SecurityUtils.getSubject().getPrincipal();
         report.setUsername(user.getUsername());
         report.setCreateReprotTime(new Date());
+        report.setFailures(report.getFailures());
+        report.setSuccesses(report.successes());
+        report.setTotalCase(report.totalCase());
         return report;
     }
 
