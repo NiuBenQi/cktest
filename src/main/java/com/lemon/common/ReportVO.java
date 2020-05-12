@@ -1,5 +1,6 @@
 package com.lemon.common;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lemon.pojo.TestReport;
 import lombok.Data;
 
@@ -26,6 +27,7 @@ public class ReportVO {
     /**
      * 生成时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createReprotTime;
     /**
      * 总用例数 计算通过率
