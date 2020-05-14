@@ -8,14 +8,18 @@ import com.lemon.pojo.ApiRequestParam;
 import com.lemon.pojo.CaseParamValue;
 import com.lemon.pojo.Cases;
 import com.lemon.mapper.CasesMapper;
+import com.lemon.pojo.User;
 import com.lemon.service.CaseParamValueService;
 import com.lemon.service.CasesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lemon.service.TestRuleService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,6 +55,11 @@ public class CasesServiceImpl extends ServiceImpl<CasesMapper, Cases> implements
             caseParamValue.setCaseId(caseVo.getId());
             caseParamValue.setApiRequestParamId(apiRequestParam.getId());
             caseParamValue.setApiRequestParamValue(apiRequestParam.getValue());
+            caseParamValue.setCreateTime(new Date());
+
+            Subject subject = SecurityUtils.getSubject();
+            User loginUser =(User) subject.getPrincipal();
+            caseParamValue.setCreateUser(loginUser.getId());
             caseParamValues.add(caseParamValue);
         }
         caseParamValueService.saveBatch(caseParamValues);

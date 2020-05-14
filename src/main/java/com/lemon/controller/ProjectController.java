@@ -6,6 +6,7 @@ import com.lemon.common.Result;
 import com.lemon.pojo.Project;
 import com.lemon.pojo.User;
 import com.lemon.service.ProjectService;
+import com.lemon.util.IsEmpty;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class ProjectController {
     @GetMapping("/toList")
     @ApiOperation(value = "根据userID获取projectlist", httpMethod = "GET")
     public Result toList(Integer userId) {
+        boolean isnull = IsEmpty.isEmpty(userId);
+        if (isnull == true){
+            return  new Result("999", "入参不能为空");
+        }
         Result result = null;
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("create_user", userId);

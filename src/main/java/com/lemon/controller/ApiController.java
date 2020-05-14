@@ -10,6 +10,7 @@ import com.lemon.pojo.Api;
 import com.lemon.pojo.User;
 import com.lemon.service.ApiRequestParamService;
 import com.lemon.service.ApiService;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,7 @@ public class ApiController {
     ApiRequestParamService apiRequestParamService;
 
     @GetMapping("/showApiUnderProject")
+    @ApiOperation(value = "根据项目id查询apiList", httpMethod = "GET")
     public Result showApiListByProject(Integer projectId) {
 
         List<ApiListVO> list = apiService.showApiListByProject(projectId);
@@ -42,6 +44,7 @@ public class ApiController {
     }
 
     @GetMapping("/showApiUnderApiClassification")
+    @ApiOperation(value = "根据分类id查询apiList", httpMethod = "GET")
     public Result showApiUnderApiClassification(Integer apiClassificationId) {
         List<ApiListVO> list = apiService.showApiListByApiClassification(apiClassificationId);
         Result result = new Result("1", list, "查询接口成功");
@@ -49,6 +52,7 @@ public class ApiController {
     }
 
     @PostMapping("/add")
+    @ApiOperation(value = "添加API", httpMethod = "POST")
     public Result addApi(Integer apiClassificationId,String apiName,String apiRequestMethod,String apiRequestUrl) {
         Api api = new Api();
         api.setApiClassificationId(apiClassificationId);
@@ -64,6 +68,7 @@ public class ApiController {
     }
 
     @GetMapping("/toApiView")
+    @ApiOperation(value = "查看API详情", httpMethod = "GET")
     public Result showApiViewVO(Integer apiId) {
         ApiVO list = apiService.findApiViewVO(apiId);
         Result result = new Result("1",list);
@@ -72,6 +77,7 @@ public class ApiController {
 
 
     @PutMapping("/edit")
+    @ApiOperation(value = "更新api", httpMethod = "PUT")
     public Result toApiEdit(ApiVO apiEdit) {
         // 1.直接根据apiid主键操作
         apiService.updateById(apiEdit);
@@ -92,10 +98,20 @@ public class ApiController {
     }
 
     @RequestMapping("/run")
+    @ApiOperation(value = "运行api", httpMethod = "GET")
     public Result run(ApiVO apiRunVO){
         ApiRunResult apiRunResult = apiService.run(apiRunVO);
         Result result = new Result("1",apiRunResult);
         return result;
     }
 
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据apiId删除api信息", httpMethod = "GET")
+    public Result delCase(@PathVariable("id") Integer apiId) {
+        if(apiId == null ){
+            return new Result("999","apiId不能为空");
+        }
+        apiService.removeById(apiId);
+        return new Result("1","删除api成功");
+    }
 }

@@ -70,4 +70,14 @@ public class CasesController {
         casesService.updateCase(caseEditVO);
         return new Result("1", "更新用例成功");
     }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据caseId删除case", httpMethod = "GET")
+    public Result delCase(@PathVariable("id") Integer caseId) {
+        if(caseId == null ){
+            return new Result("999","caseId不能为空");
+        }
+        casesService.removeById(caseId);
+        return new Result("1","删除case成功");
+    }
 }

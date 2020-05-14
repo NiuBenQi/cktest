@@ -11,6 +11,7 @@ import com.lemon.pojo.Suite;
 import com.lemon.pojo.User;
 import com.lemon.service.ApiClassificationService;
 import com.lemon.service.SuiteService;
+import com.lemon.util.IsEmpty;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class ApiClassificationController {
     @GetMapping("/toIndex")
     @ApiOperation(value = "根据projectid查询分类信息", httpMethod = "GET")
     public Result getWithApi(Integer projectId, Integer tab) {
+        boolean isnull = IsEmpty.isEmpty(projectId);
+        boolean isnull2 = IsEmpty.isEmpty(tab);
+        if (isnull == true || isnull2 == true){
+            return new Result("999",  "入参不能为空");
+        }
         Result result = null;
         if (tab == 1) {
             // 接口列表
@@ -75,7 +81,12 @@ public class ApiClassificationController {
     }
 
     @PostMapping("/add")
+    @ApiOperation(value = "添加api分类信息", httpMethod = "POST")
     public Result addapiClassification(String name, String description, Integer projectId) {
+
+        if (name.equals("") || name == null || description == null || projectId == null || description.equals("")){
+            return new Result("999","参数不允许为空");
+        }
         ApiClassification apiClassification = new ApiClassification();
         apiClassification.setName(name);
         apiClassification.setDescription(description);
@@ -89,6 +100,7 @@ public class ApiClassificationController {
     }
 
     @PostMapping("/add2")
+    @ApiOperation(value = "添加case分类信息", httpMethod = "POST")
     public Result add2(@RequestBody String jsonStr) {
         //将jsonStr转为java对象
         ApiClassification apiClassification = JSON.parseObject(jsonStr,ApiClassification.class);

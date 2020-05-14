@@ -6,6 +6,7 @@ import com.lemon.common.Result;
 import com.lemon.pojo.User;
 import com.lemon.service.UserService;
 
+import com.lemon.util.IsEmpty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
@@ -42,6 +43,10 @@ public class UserController {
     @PostMapping("/register")
     @ApiOperation(value = "注册方法", httpMethod = "POST")
     public Result register(User user) throws ParseException {
+
+        if (IsEmpty.isEmpty(user.getUsername())||IsEmpty.isEmpty(user.getPassword())){
+            return new Result("999", "参数不能为空");
+        }
         //调用业务层方法，插入到DB，统一处理异常
         userService.save(user);
         Result result = new Result("1", "注册成功");

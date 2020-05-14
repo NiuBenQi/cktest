@@ -10,6 +10,8 @@ import com.lemon.mapper.ApiMapper;
 import com.lemon.pojo.ApiRequestParam;
 import com.lemon.service.ApiService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lemon.util.IsEmpty;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ import java.util.List;
  * @author benqi
  * @since 2020-02-14
  */
+@Slf4j
 @Service
 public class ApiServiceImpl extends ServiceImpl<ApiMapper, Api> implements ApiService {
     @Autowired
@@ -60,30 +63,41 @@ public class ApiServiceImpl extends ServiceImpl<ApiMapper, Api> implements ApiSe
         LinkedMultiValueMap<String, String> bodyParams = new LinkedMultiValueMap<String, String>();
         String paramStr = "?";
         String bodyParamsStr = null;
-        for (ApiRequestParam apiRequestParam : list) {
-            // 将不同的请求信息循环放入对应的类型中 1. param --2.body  --3.head --4.json格式的请求体
-            if(apiRequestParam.getType() == 1){
-                paramStr += apiRequestParam.getName()+"="+apiRequestParam.getValue()+"&";
+        ApiRunResult apiRunResult = new ApiRunResult();
+        try {
+            for (ApiRequestParam apiRequestParam : list) {
+                // 将不同的请求信息循环放入对应的类型中 1. param --2.body  --3.head --4.json格式的请求体
+                if(apiRequestParam.getType() == 1){
+                    paramStr += apiRequestParam.getName()+"="+apiRequestParam.getValue()+"&";
+                }
+                if (apiRequestParam.getType() == 3) {
+                    // 头 3
+                    headers.add(apiRequestParam.getName(), apiRequestParam.getValue());
+                } else if(apiRequestParam.getType()==4){
+                    bodyParamsStr = apiRequestParam.getValue();
+                } else if (apiRequestParam.getType()==2){
+                    // body 2
+                    bodyParams.add(apiRequestParam.getName(), apiRequestParam.getValue());
+                }
             }
-            if (apiRequestParam.getType() == 3) {
-                // 头
-                headers.add(apiRequestParam.getName(), apiRequestParam.getValue());
-            } else if(apiRequestParam.getType()==4){
-                bodyParamsStr = apiRequestParam.getValue();
-            } else if (apiRequestParam.getType()==2){
-                // body 2
-                bodyParams.add(apiRequestParam.getName(), apiRequestParam.getValue());
-            }
+        }catch (Exception e){
+            apiRunResult.setStatusCode("999");
+            apiRunResult.setHeaders("");
+            apiRunResult.setBody("请求参数不正确");
+            log.info("apiRequestParam中的参数异常{}",e);
+            return apiRunResult;
         }
+
         // paramtype=1时，去掉url最后一个&
         if(!"?".equals(paramStr)){
             paramStr = paramStr.substring(0,paramStr.lastIndexOf("&"));
         }
         System.out.println("================"+paramStr);
+        // httpEntity 代表底层流的基本实体。通常是在http报文中获取的实体
         HttpEntity httpEntity = new HttpEntity(bodyParams, headers);
         // 给responseEntity 赋个默认值 POST 请求
         ResponseEntity responseEntity = null;
-        ApiRunResult apiRunResult = new ApiRunResult();
+
         try {
             if ("get".equalsIgnoreCase(method)) {
                 httpEntity = new HttpEntity(headers);
@@ -115,6 +129,7 @@ public class ApiServiceImpl extends ServiceImpl<ApiMapper, Api> implements ApiSe
             apiRunResult.setStatusCode(e.getStatusCode() + "");
             apiRunResult.setHeaders(JSON.toJSONString(e.getResponseHeaders()));
             apiRunResult.setBody(e.getResponseBodyAsString());
+            return apiRunResult;
         }
         apiRunResult.setStatusCode(responseEntity.getStatusCode() + "");
         HttpHeaders headersResult = responseEntity.getHeaders();

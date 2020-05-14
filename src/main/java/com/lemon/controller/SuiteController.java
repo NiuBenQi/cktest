@@ -11,11 +11,7 @@ import com.lemon.service.SuiteService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -56,5 +52,14 @@ public class SuiteController {
         return new Result("1","成功");
     }
 
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据suiteId删除测试套件", httpMethod = "GET")
+    public Result delsuite(@PathVariable("id") Integer suiteId) {
+        if(suiteId == null ){
+            return new Result("999","suiteId 不能为空");
+        }
+        suiteService.removeById(suiteId);
+        return new Result("1","删除测试套件成功");
+    }
 
 }

@@ -166,13 +166,21 @@ public class TestReportServiceImpl extends ServiceImpl<TestReportMapper, TestRep
         return testReport;
     }
 
+    /**
+     *  校验case是否通过
+     * @param responseBode
+     * @param testRules
+     * @return
+     */
     String assertByTestRule(String responseBode, List<TestRule> testRules) {
+        // 默认通过
         boolean flag = true;
         for (TestRule testRule : testRules) {
             Object value = JSONPath.read(responseBode, testRule.getExpression());
             String actual = (String) value;
             String op = testRule.getOperator();
             if (op.equals("=")) {
+                // 如果实际结果不等于预期结果
                 if (!value.equals(testRule.getExpected())) {
                     flag = false;
                 }
